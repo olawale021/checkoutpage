@@ -1,0 +1,33 @@
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .cart-item .item-info {
+    flex: 1;
+  }
+  
+  .cart-item .item-quantity {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-item .item-quantity button {
+    margin: 0 5px;
+  }
+  
+  .like-button {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 1.5em;
+    color: #ccc;
+  }
+  
+  .like-button.liked {
+    color: red;
+  }
+  
