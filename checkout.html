@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/checkout.css">
 </head>
 <body>
     <div id="cart">
@@ -14,9 +14,9 @@
         </div>
     <script>
         const cartItems = [
-    { id: 1, name: "Item 1", price: 10, quantity: 1, liked: false },
-    { id: 2, name: "Item 2", price: 15, quantity: 2, liked: true },
-    { id: 3, name: "Item 3", price: 20, quantity: 3, liked: false }
+    { id: 1, name: "Product 1", price: 100, quantity: 1, liked: false },
+    { id: 2, name: "product 2", price: 150, quantity: 2, liked: true },
+    { id: 3, name: "Product 3", price: 200, quantity: 3, liked: false }
 ];
 
 function renderCart() {
@@ -34,7 +34,7 @@ function renderCart() {
     itemInfo.classList.add("item-info");
     itemInfo.innerHTML = `
       <span>${item.name}</span>
-      <span>Price: $${item.price}</span>
+      <span>Price: €${item.price}</span>
     `;
 
     const itemQuantity = document.createElement("div");
@@ -61,7 +61,7 @@ function renderCart() {
     totalPrice += item.price * item.quantity;
   });
 
-  totalPriceElement.textContent = `Total Price: $${totalPrice}`;
+  totalPriceElement.textContent = `Total Price: €${totalPrice}`;
 }
 
 function increaseQuantity(itemId) {

@@ -1,98 +1,94 @@
-let openShopping = document.querySelector('.shopping');
-let closeShopping = document.querySelector('.closeShopping');
-let list = document.querySelector('.list');
-let listCard = document.querySelector('.listCard');
-let body = document.querySelector('body');
-let total = document.querySelector('.total');
-let quantity = document.querySelector('.quantity');
-
-openShopping.addEventListener('click', ()=>{
-    body.classList.remove('active');
-})
-
-let product = [
-    {
-        id: 1,
-        name: 'PRODUCT 1',
-        price: 1000,
-        image: 'car1.jpg'
-    },
-    {
-        id: 2,
-        name: 'PRODUCT 2',
-        price: 2000,
-        image: 'car2.jpg'
-    },
-    {
-        id: 3,
-        name: 'PRODUCT 3',
-        price: 3000,
-        image: 'car3.jpg'
-    },
-    {
-        id: 4,
-        name: 'PRODUCT 4',
-        price: 4000,
-        image: 'car3.jpg'
-    },
-    {
-        id: 5,
-        name: 'PRODUCT 5',
-        price: 4000,
-        image: 'car3.jpg'
-    },
-    {
-        id: 6,
-        name: 'PRODUCT 6',
-        price: 4000,
-        image: 'car3.jpg'
-    },
-];
-let listCards = [];
-function initApp(){
-    product.forEach((value, key)=>{
-        let newDiv = document.createElement('div');
-        newDiv.classList.add('item');
-        newDiv.innerHTML = `
-        <img src="images/${value.image}"/>
-        <div class="title">${value.name}</div>
-        <div class="price">${value.price.toLocaleString()}</div>
-        <button onclick="addToCard(${key})">Add to Cart</button>
+    // Sample data for items in the cart
+    const cartItems = [
+        { id: 1, name: "Item 1", price: 100, quantity: 1, liked: false },
+        { id: 2, name: "Item 2", price: 200, quantity: 2, liked: true },
+        { id: 3, name: "Item 3", price: 300, quantity: 3, liked: false }
+    ];
+    
+    // Function to render the cart items
+    function renderCart() {
+        const itemList = document.getElementById("item-list");
+        const totalPriceElement = document.getElementById("total-price");
+        let totalPrice = 0;
+    
+        itemList.innerHTML = "";
+    
+        cartItems.forEach(item => {
+        const cartItem = document.createElement("li");
+        cartItem.classList.add("cart-item");
+    
+        const itemInfo = document.createElement("div");
+        itemInfo.classList.add("item-info");
+        itemInfo.innerHTML = `
+            <span>${item.name}</span>
+            <span>Price: €${item.price}</span>
         `;
-        list.appendChild(newDiv);
-    })
-}
-initApp();
-function addToCard(key) {
-    if(listCards[key] == null){
-        listCards[key] = product[key];
-        listCards[key].quantity = 1;
+    
+        const itemQuantity = document.createElement("div");
+        itemQuantity.classList.add("item-quantity");
+        itemQuantity.innerHTML = `
+            <button onclick="decreaseQuantity(${item.id})">-</button>
+            <span>${item.quantity}</span>
+            <button onclick="increaseQuantity(${item.id})">+</button>
+        `;
+    
+        const likeButton = document.createElement("button");
+        likeButton.innerHTML = item.liked ? "❤️" : "♡";
+        likeButton.classList.add(item.liked ? "liked" : "not-liked");
+        likeButton.addEventListener("click", () => toggleLike(item.id));
+    
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "Delete";
+        deleteButton.addEventListener("click", () => deleteItem(item.id));
+    
+        cartItem.appendChild(itemInfo);
+        cartItem.appendChild(itemQuantity);
+        cartItem.appendChild(likeButton);
+        cartItem.appendChild(deleteButton);
+        itemList.appendChild(cartItem);
+    
+        totalPrice += item.price * item.quantity;
+        });
+    
+        totalPriceElement.textContent = `Total Price: $${totalPrice}`;
     }
-    reloadCard();
-}
-function reloadCard() {
-    listCard.innerHTML = ''
-    let count = 0;
-    let totalPrice = 0;
-    listCards.forEach((value, key)=>{
-        totalPrice = totalPrice + value.price;
-        count = count + value.quantity;
-
-        if (value != null){
-            let newDiv = document.createElement('li');
-            newDiv.innerHTML = `
-            <div><img src="image/${value.image}"/></div>
-            <div>${value.name}</div>
-            <div>${value.price.toLocaleString()}</div>
-            <div>${value.quantity}</div>
-            <div>
-                <button onclick="changeQuantity(${key}, ${value.quantity  - 1})">-</button>
-                <div class="count">${value.quantity}</div>
-                <button onclick="changeQuantity(${key}, ${value.quantity  + 1})">+</button>
-            </div>
-            `;
+    
+    // Function to increase the quantity of an item
+    function increaseQuantity(itemId) {
+        const item = cartItems.find(item => item.id === itemId);
+        if (item) {
+        item.quantity++;
+        renderCart();
         }
-})
-    total.innerHTML = `Total: ${totalPrice.toLocaleString()}`;
-    quantity.innerHTML = count;
-}
+    }
+    
+    // Function to decrease the quantity of an item
+    function decreaseQuantity(itemId) {
+        const item = cartItems.find(item => item.id === itemId);
+        if (item && item.quantity > 1) {
+        item.quantity--;
+        renderCart();
+        }
+    }
+    
+    // Function to toggle the liked state of an item
+    function toggleLike(itemId) {
+        const item = cartItems.find(item => item.id === itemId);
+        if (item) {
+        item.liked = !item.liked;
+        renderCart();
+        }
+    }
+    
+    // Function to delete an item from the cart
+    function deleteItem(itemId) {
+        const itemIndex = cartItems.findIndex(item => item.id === itemId);
+        if (itemIndex !== -1) {
+        cartItems.splice(itemIndex, 1);
+        renderCart();
+        }
+    }
+    
+    // Render the initial cart
+    renderCart();
+    
